@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Update Account</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-zinc-900 text-white flex items-center justify-center min-h-screen">
+  <div class="bg-zinc-800 p-6 rounded-md w-full max-w-md">
+    <h2 class="text-2xl font-semibold mb-4 text-center">Update Your Account</h2>
+    
+    <form action="/update" method="POST" class="flex flex-col">
+      <!-- First Name -->
+      <label class="mb-1">First Name</label>
+      <input
+        type="text"
+        name="FirstName"
+        value="<%= user.FirstName %>"
+        required
+        placeholder="Update first name"
+        class="p-2 mb-3 bg-zinc-700 border border-white rounded"
+      />
+
+      <!-- Last Name -->
+      <label class="mb-1">Last Name</label>
+      <input
+        type="text"
+        name="LastName"
+        value="<%= user.LastName %>"
+        required
+        placeholder="Update last name"
+        class="p-2 mb-3 bg-zinc-700 border border-white rounded"
+      />
+
+      <!-- Email -->
+      <label class="mb-1">Email Address</label>
+      <input
+        type="email"
+        name="email"
+        value="<%= user.email %>"
+        required
+        placeholder="Update email"
+        class="p-2 mb-3 bg-zinc-700 border border-white rounded"
+        />
+        
+        <!-- Date of Birth -->
+        <label class="mb-1">Date of Birth</label>
+        <input
+        type="date"
+        name="dob"
+        value="<%= user.DOB.toISOString().split('T')[0] %>"
+        required
+        class="p-2 mb-3 bg-zinc-700 border border-white rounded"
+        />
+        
+        <!-- Password -->
+        <label class="mb-1">Password</label>
+        <input
+        type="password"
+        name="password"
+        value="<%= user.password %>"
+        required
+        class="p-2 mb-4 bg-zinc-700 border border-white rounded"
+      />
+
+      <!-- Submit Button -->
+      <button type="submit" class="bg-yellow-500 text-white p-2 rounded">
+        Update
+      </button>
+    </form>
+
+    <p class="text-center text-sm mt-4">
+      Go back to
+      <a href="/profile" class="text-yellow-300 underline">Back</a>
+    </p>
+  </div>
+</body>
+</html>

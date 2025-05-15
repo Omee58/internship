@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Register</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-zinc-900 text-white flex items-center justify-center min-h-screen">
+  <div class="bg-zinc-800 p-6 rounded-md w-full max-w-md">
+    <h2 class="text-2xl font-semibold mb-4 text-center">Create a New Account</h2>
+
+    <form action="/register" method="POST" class="flex flex-col">
+
+      <label for="fname" class="mb-1">First Name</label>
+      <input id="fname" type="text" name="FirstName" required placeholder="Enter your first name"
+        class="p-2 mb-3 bg-zinc-700 border border-white rounded" />
+
+      <label for="lname" class="mb-1">Last Name</label>
+      <input id="lname" type="text" name="LastName" required placeholder="Enter your last name"
+        class="p-2 mb-3 bg-zinc-700 border border-white rounded" />
+
+      <label for="Email" class="mb-1">Email Address</label>
+      <input id="Email" type="email" name="email" required placeholder="Enter your email"
+        class="p-2 mb-3 bg-zinc-700 border border-white rounded" />
+      <% if(error){ %>
+        <p class="text-red-600 mb-3">
+          <%= error %>
+        </p>
+        <% } %>
+
+          <label for="DOB" class="mb-1">Date of Birth</label>
+          <input id="DOB" type="date" name="dob" required class="p-2 mb-3 bg-zinc-700 border border-white rounded" />
+
+          <label for="Password" class="mb-1">Password</label>
+          <input id="Password" type="password" name="password" required placeholder="Create a password"
+            class="p-2 mb-4 bg-zinc-700 border border-white rounded" />
+
+          <button type="submit" class="bg-blue-600 text-white p-2 rounded">
+            Register
+          </button>
+    </form>
+
+    <p class="text-center text-sm mt-4">
+      Already have an account?
+      <a href="/" class="text-blue-400 underline">Log in</a>
+    </p>
+  </div>
+</body>
+
+</html>

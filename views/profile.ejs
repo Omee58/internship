@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Profile</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-zinc-900 text-white min-h-screen flex flex-col items-center justify-center">
+
+  <h1 class="text-3xl font-bold mb-4">Welcome, <%= user.FirstName %> <%= user.LastName %>!</h1>
+
+  <p class="mb-8 text-center text-lg">You are logged in successfully.</p>
+
+  <div class="flex gap-4">
+    <a href="/update" class="bg-yellow-500 px-4 py-2 rounded">Update Account</a>
+    <a href="/logout" class="bg-red-600 px-4 py-2 rounded">Log Out</a>
+    <a href="/delete/<%= user._id %>" class="bg-red-600 px-4 py-2 rounded">Delete</a>
+  </div>
+
+</body>
+</html>
