@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>OTP Verification</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-zinc-900 text-white flex items-center justify-center min-h-screen">
+  <div class="bg-zinc-800 p-8 rounded-md w-full max-w-md shadow-lg">
+    <h2 class="text-2xl font-semibold mb-4 text-center">Verify Your Email</h2>
+
+    <p class="text-center mb-6 text-zinc-400">
+      We have sent a 6-digit OTP to your registered email address. Please enter it below to verify your account.
+    </p>
+
+    <!-- Placeholder for error or success messages -->
+    <div id="message" class="mb-4 text-center hidden text-sm text-red-500">Invalid OTP. Please try again.</div>
+
+    <form action="/verify-otp" method="POST" class="flex flex-col">
+      <label for="otp" class="mb-2 font-medium">Enter OTP</label>
+      <input type="number" id="otp" name="otp" minlength="6" maxlength="6" required placeholder="6-digit code" autofocus
+        oninput="checkOTP()" class="p-3 mb-5 bg-zinc-700 border border-white rounded outline-none" />
+
+      <button type="submit"
+        class="bg-blue-600 hover:bg-blue-700 transition-colors duration-200 text-white py-2 rounded font-semibold">
+        Verify OTP
+      </button>
+    </form>
+
+    <p class="text-center mt-6 text-zinc-500 text-sm">
+      Didn't receive the code? <a href="/resend-otp" class="text-blue-500 hover:underline">Resend OTP</a>
+    </p>
+  </div>
+
+  <script>
+    function checkOTP() {
+      const input = document.querySelector('#otp').value;
+      document.querySelector('#message').classList.add('hidden');
+      if (input.length === 6) {
+        if ("<%= otp %>" === input) {
+          document.querySelector('form').submit()
+        }
+        else {
+          document.querySelector('#message').classList.remove('hidden');
+        }
+      }
+    }
+  </script>
+
+</body>
+
+</html>

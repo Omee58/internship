@@ -1,6 +1,7 @@
 const express = require("express");
 const app = express();
 const path = require("path");
+const session = require('express-session');
 const CookieParser = require("cookie-parser");
 const middelware = require("./middelwares/middelware");
 const controller = require("./controllers/user.controller");
@@ -13,35 +14,60 @@ app.set("views", path.join(__dirname, "views"));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(CookieParser());
+app.use(session({
+  secret: process.env.SESSION_SECRET,
+  resave: false,
+  saveUninitialized: false,
+  cookie: {
+    maxAge: 10 * 60 * 1000,
+    httpOnly: true,
+    secure: false
+  }
+}));
 
-app.get("/", controller.indexPage);
+// ======================= Home / index page =======================
+app.get("/", controller.showLoginPage);
+app.post("/login", middelware.SetTocken, controller.handleLogin);
 
-app.post("/login", middelware.SetTocken, controller.loginUser);
 
+// ======================= Register Page =======================
+app.get("/register", controller.showRegisterPage);
+app.post(
+  "/register",
+  middelware.UserExist,
+  middelware.sendOtp,
+  controller.redirectOtpPage
+);
+
+
+// ======================= Profile Page =======================
 app.get(
   "/profile",
   middelware.isUserLogin,
   middelware.FindUser,
-  controller.profilePage
+  controller.profilePage,
 );
 
-app.get("/register", controller.registerPage);
 
-app.post(
-  "/register",
-  middelware.UserExist,
-  middelware.RegisterUser,
-  controller.registerUser
-);
+// ======================= OTP Verification page =======================
+app.get("/otp-verification", middelware.addOTP, controller.showOtpVerificationPage);
+app.post("/verify-otp", middelware.RegisterUser, controller.redirectProfilePage);
 
-app.get("/update", middelware.FindUser, controller.updatePage);
+
+// ======================= Update Page =======================
+app.get("/update", middelware.FindUser, controller.showUpdatePage);
 app.post("/update", middelware.FindUser, controller.updateUser);
 
 
-app.get("/delete/:id", controller.deletePage);
+// ======================= Delete Page =======================
+app.get("/delete/:id", middelware.isUserLogin, controller.deleteUser);
 
+
+// ======================= Logout =======================
 app.get("/logout", controller.logoutPage);
 
+
+// =====================================================================
 app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);
 });

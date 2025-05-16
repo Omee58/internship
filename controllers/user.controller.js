@@ -2,31 +2,38 @@ const userModel = require("../models/userModel");
 
 module.exports = {
   // Home/Login Page (GET)
-  indexPage: function (req, res) {
+  showLoginPage: function (req, res) {
     const token = req.cookies.token;
-    if (token) return res.redirect("/profile");
+    
+    if (token && token != '' && token != 'undefined' ) return res.redirect("/profile");
 
     const error = req.query.error;
     res.render("login", { error });
   },
 
   // Handle Login (POST)
-  loginUser: async function (req, res) {
+  handleLogin: async function (req, res) {
     res.cookie("token", req.token);
     res.redirect("/profile");
   },
 
   // Register Page (GET)
-  registerPage: function (req, res) {
+  showRegisterPage: function (req, res) {
     const error = req.query.error;
     res.render("register", { error });
   },
 
-  // Handle Register (POST)
-  registerUser: async function (req, res) {
-    // token already set in middleware after creating user
-    res.cookie("token", req.token);
+  // (POST) register 
+  redirectOtpPage: async function (req, res) {
+    res.redirect("/otp-verification");
+  },
+
+  redirectProfilePage: function (req, res) {
     res.redirect("/profile");
+  },
+
+  showOtpVerificationPage: function (req, res) {
+    res.render("verifyOtp", { otp: req.session.otp });
   },
 
   // Profile Page (GET)
@@ -35,7 +42,7 @@ module.exports = {
   },
 
   // Update Page (GET)
-  updatePage: function (req, res) {
+  showUpdatePage: function (req, res) {
     res.render("update", { user: req.LoginUser });
   },
 
@@ -54,7 +61,7 @@ module.exports = {
   },
 
   // Delete User (GET or DELETE)
-  deletePage: async function (req, res) {
+  deleteUser: async function (req, res) {
     const id = req.params.id;
     await userModel.findOneAndDelete({ _id: id });
     res.clearCookie("token");
@@ -66,4 +73,5 @@ module.exports = {
     res.clearCookie("token");
     res.redirect("/");
   },
+
 };
