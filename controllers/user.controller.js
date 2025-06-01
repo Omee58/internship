@@ -1,5 +1,6 @@
 const subscriptionModel = require("../models/subscription.model");
 const userModel = require("../models/user.model");
+const deletedUserModel = require("../models/deletedUser.model");
 const crypto = require("crypto");
 
 let newSubscrition_id;
@@ -90,7 +91,29 @@ module.exports = {
   // Delete User (GET or DELETE)
   deleteUser: async function (req, res) {
     const id = req.params.id;
-    await userModel.findOneAndDelete({ _id: id });
+    const deletedUser = await userModel.findOneAndDelete({ _id: id });
+
+    if (!deletedUser) {
+      return res.status(404).json({ error: "User not found" });
+    }
+    const {
+      _id: userId,
+      FirstName,
+      LastName,
+      email,
+      DOB,
+      password,
+    } = deletedUser;
+    
+    await deletedUserModel.create({
+      userId,
+      FirstName,
+      LastName,
+      email,
+      DOB,
+      password,
+    });
+
     res.clearCookie("token");
     res.redirect("/");
   },
