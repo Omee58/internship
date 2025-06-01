@@ -60,8 +60,8 @@ This is a Node.js web application for managing user registration, login, profile
 
 ### 1. Clone the Repository
 ```bash
-git clone https://github.com/yourusername/subscription-app.git
-cd subscription-app
+git clone https://github.com/Omee58/internship.git
+cd internship
 ```
 
 ### 2. Install Dependencies
