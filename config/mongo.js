@@ -6,7 +6,7 @@ mongoose.connect(process.env.MONGODB_URI)
     console.log('Connected to MongoDB');
   })
   .catch((err) => {
-    console.error('\n-------------------------\nFailed to connect to MongoDB, Error is :\n-------------------------\n Error is : ', err);
+    console.error('\n-------------------------\nFailed to connect to MongoDB, \n Error is : ', err, '\n-------------------------');
   });
 
 module.exports = mongoose;

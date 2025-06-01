@@ -1,6 +1,8 @@
-const userModel = require("../models/userModel");
+const userModel = require("../models/user.model");
+const planModel = require("../models/plan.model");
 const jwt = require("jsonwebtoken");
 const nodemailer = require("nodemailer");
+const Razorpay = require("razorpay");
 
 module.exports = {
   SetTocken: async function (req, res, next) {
@@ -30,6 +32,12 @@ module.exports = {
     } else {
       res.redirect("/");
     }
+  },
+
+  LoadPlan: async function (req, res, next) {
+    const allPlans = await planModel.find();
+    req.allPlans = allPlans;
+    next();
   },
 
   sendOtp: async function (req, res, next) {
@@ -110,7 +118,8 @@ module.exports = {
   },
 
   RegisterUser: async function (req, res, next) {
-    const { FirstName, LastName, email, dob, password } = await req.session.user;
+    const { FirstName, LastName, email, dob, password } = await req.session
+      .user;
     const user = await userModel.create({
       FirstName,
       LastName,
@@ -125,8 +134,32 @@ module.exports = {
     next();
   },
 
+  // create new Payment
+  createSubscription: async function (req, res, next) {
+    const razorpay = new Razorpay({
+      key_id: process.env.RAZORPAY_ID,
+      key_secret: process.env.RAZORPAY_SECRET,
+    });
+
+    const options = {
+      amount: req.body.Amount * 100,
+      currency: "INR",
+    };
+
+    try {
+      const order = await razorpay.orders.create(options);
+      req.order = order;
+      res.json(order);
+      next();
+    } catch (err) {
+      console.error("Error form createSubscription : ", err);
+      res.status(500).send("Error creating Razorpay order");
+    }
+  },
+
   FindUser: async function (req, res, next) {
     const token = req.cookies.token;
+    if (!token) res.redirect("/");
     const data = jwt.verify(token, process.env.JWT_SECRET);
     const user = await userModel.findOne({ _id: data.id });
 
