@@ -17,7 +17,9 @@ module.exports = {
 
   // Handle Login (POST)
   handleLogin: async function (req, res) {
-    res.cookie("token", req.token);
+    res.cookie("token", req.token, {
+      maxAge: 48 * 60 * 60 * 1000,
+    });
     res.redirect("/profile");
   },
 
@@ -104,7 +106,7 @@ module.exports = {
       DOB,
       password,
     } = deletedUser;
-    
+
     await deletedUserModel.create({
       userId,
       FirstName,

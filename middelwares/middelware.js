@@ -129,7 +129,9 @@ module.exports = {
     });
 
     const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET);
-    res.cookie("token", token);
+    res.cookie("token", token, {
+      maxAge: 48 * 60 * 60 * 1000,
+    });
 
     next();
   },
